@@ -12,7 +12,7 @@ const shopName = req.query.shop;
   const emailObj = {
     to: ['ingutierrez.u@gmail.com'],
     subject: 'test email',
-    body: 'form content'
+    body: '<p>form content</p>'
   }
   provider.mailer.send(emailObj.to, emailObj.subject, emailObj.body);
 

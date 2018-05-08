@@ -21,7 +21,7 @@ exports.service = service;
 mailer.send = function (to, subject, body) {
   const mail = new MailHelper.Mail();
   mail.setSubject(subject);
-  mail.addContent(new MailHelper.Content('text', body));
+  mail.addContent(new MailHelper.Content('text/html', body));
 
   let email = new MailHelper.Email('app95896168@heroku.com');
   mail.setFrom(email);
