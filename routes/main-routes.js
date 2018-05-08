@@ -30,7 +30,7 @@ router.get('/', co(function* (req, res, next ){
 
   let localShop = yield provider.db.shop.findByName(shop);
 
-  if (localShop.accessToken.length <= 0) {
+  if (!localShop || localShop.accessToken.length <= 0) {
     res.redirect('/install?shop=' + shop);
     return;
   }
@@ -53,7 +53,7 @@ router.get('/install', co(function* (req, res, next ){
   };
 
 
-  yield provider.db.shop.findOrCreateShop({ companyName: shopName });
+  yield provider.db.shop.findOrCreate({ companyName: shopName });
   const url = provider.service.authURL(shopName);
   // redirects to /authenticate
   res.redirect(url);
