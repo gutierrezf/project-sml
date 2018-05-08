@@ -1,10 +1,10 @@
 'use strict';
 
-var express = require('express');
-var router = express.Router();
-var co = require('co-express');
-var provider = require('../main');
-var constants = require('../constants');
+const express = require('express');
+const router = express.Router();
+const co = require('co-express');
+const provider = require('../main');
+
 
 router.use(function timeLog (req, res, next) {
   console.log('Time: ', Date.now());

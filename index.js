@@ -62,4 +62,6 @@ ROUTERS
 ****/
 
 var mainRoutes = require('./routes/main-routes');
+var apiRoutes = require('./routes/api');
 app.use('/', mainRoutes);
+app.use('/api', apiRoutes);

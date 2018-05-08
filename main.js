@@ -18,20 +18,22 @@ exports.mailer = mailer;
 exports.db = db;
 exports.service = service; 
 
-mailer.send = function (from, to, subject, body) {
+mailer.send = function (to, subject, body) {
   const mail = new MailHelper.Mail();
   mail.setSubject(subject);
-  mail.addContent(new MailHelper.Content('text/html', body));
+  mail.addContent(new MailHelper.Content('text', body));
 
-  let email = new MailHelper.Email(from);
+  let email = new MailHelper.Email('app95896168@heroku.com');
   mail.setFrom(email);
 
   const personalization = new MailHelper.Personalization();
-  to.forEach((sendTo) => {
+  to.map((sendTo) => {
     email = new MailHelper.Email(sendTo);
     personalization.addTo(email);
   });
   mail.addPersonalization(personalization);
+
+  console.log(mail);
 
   const mailRequest = SendGrid.emptyRequest({
     method: 'POST',
@@ -46,6 +48,7 @@ mailer.send = function (from, to, subject, body) {
         reject(error);
       } else {
         console.log(response.statusCode, 'mail send');
+        console.log(response);
         resolve(response);
       }
     });
