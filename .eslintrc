@@ -1,0 +1,10 @@
+
+{
+  "extends": ["airbnb-standard"],
+  "rules": {
+    func-names: ["error", "never"],
+    comma-dangle: ["error", "only-multiline"],
+    no-console: ["error", { allow: ["warn", "error", "log"] }],
+    no-underscore-dangle : ["error", { "allow": ["_id", "_doc"] }],
+  },
+}
