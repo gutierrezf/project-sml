@@ -1,128 +1,125 @@
-'use strict';
+const Promise = require('promise');
 
-var Promise = require('promise');
-var Base = {};
+const Base = {};
 
-
-exports.MongooseInterface = function(model) {
-  let obj = Object.assign({}, Base);
+exports.MongooseInterface = function (model) {
+  const obj = Object.assign({}, Base);
   obj.model = model;
   return obj;
-}
+};
 
-Base.getModel = function(queryOptions) {
+Base.getModel = function () {
   return this.model;
-}
+};
 
-Base.findOrCreate = function(queryOptions){
-  let model = this.getModel();
-  queryOptions = queryOptions || {};
-  return new Promise(function(success, reject) {
-    model.findOrCreate(queryOptions, function(err, data) {
+Base.findOrCreate = function (queryOptions) {
+  const model = this.getModel();
+  const query = queryOptions || {};
+  return new Promise((resolve, reject) => {
+    model.findOrCreate(query, (err, data) => {
       if (err) {
         reject(err);
       } else {
-        success(data);
+        resolve(data);
       }
     });
   });
-}
+};
 
-Base.save = function(data){
-  let model = this.getModel();
-  return new Promise(function(success, reject) {
-    model.create(data, function(err, data) {
+Base.save = function (query) {
+  const model = this.getModel();
+  return new Promise((resolve, reject) => {
+    model.create(query, (err, data) => {
       if (err) {
         reject(err);
       } else {
-        success(data);
+        resolve(data);
       }
     });
   });
-}
+};
 
-Base.findOne = function(query){
-  let model = this.getModel();
-  return new Promise(function(success, reject) {
-    model.findOne(query, function(err, data) {
+Base.findOne = function (query) {
+  const model = this.getModel();
+  return new Promise((resolve, reject) => {
+    model.findOne(query, (err, data) => {
       if (err) {
         reject(err);
       } else {
-        success(data);
+        resolve(data);
       }
     });
   });
-}
+};
 
-Base.findById = function(id){
-  let model = this.getModel();
-  return new Promise(function(success, reject) {
-    model.findById(id, function(err, data) {
+Base.findById = function (id) {
+  const model = this.getModel();
+  return new Promise((resolve, reject) => {
+    model.findById(id, (err, data) => {
       if (err) {
         reject(err);
       } else {
-        success(data);
+        resolve(data);
       }
     });
   });
-}
+};
 
+Base.find = function (queryOptions, sortOptions) {
+  const model = this.getModel();
+  const query = queryOptions || {};
+  const sort = sortOptions || { created_at: -1 };
 
-Base.find =  function(queryOptions, sortOptions){
-  let model = this.getModel();
-  queryOptions = queryOptions || {};
-  sortOptions = sortOptions || {created_at: -1};
-  return new Promise(function(success, reject) {
-    let query = model.find(queryOptions);
-    query = model.find(queryOptions);
-    query.sort(sortOptions);
-    query.exec( function(err, data) {
+  return new Promise((resolve, reject) => {
+    const search = model.find(query);
+    search.sort(sort);
+    search.exec((err, data) => {
       if (err) {
         reject(err);
       } else {
-        success(data);
+        resolve(data);
       }
     });
   });
-}
+};
 
-Base.update =  function(data) {
-  let model = this.getModel();
-  let id = data._id;
-  return new Promise(function(success, reject) {
-    model.findByIdAndUpdate(id, data, {new: false}, function(err, model){
+Base.update = function (data) {
+  const model = this.getModel();
+  const id = data._id;
+  return new Promise((resolve, reject) => {
+    model.findByIdAndUpdate(id, data, { new: false }, (err, dataObj) => {
       if (err) {
         reject(err);
       } else {
-        success(model);
+        resolve(dataObj);
       }
     });
   });
-}
+};
 
-Base.updateAll =  function(query, data) {
-  query = query || {};
-  data = data || {};
-  let model = this.getModel();
-  return new Promise(function(success, reject) {
-    model.update(query, data, {multi: true}, function(err, model){
+Base.updateAll = function (queryOptions, newData) {
+  const query = queryOptions || {};
+  const data = newData || {};
+  const model = this.getModel();
+  return new Promise((resolve, reject) => {
+    model.update(query, data, { multi: true }, (err, dataObj) => {
       if (err) {
         reject(err);
       } else {
-        success(model);
+        resolve(dataObj);
       }
     });
   });
-}
+};
 
-Base.delete =  function(query) {
-  let model = this.getModel();
-  return new Promise(function(success, reject) {
-    model.remove(query, function(err){
+Base.delete = function (query) {
+  const model = this.getModel();
+  return new Promise((resolve, reject) => {
+    model.remove(query, (err, data) => {
       if (err) {
         reject(err);
       }
-      success("sucess");
+      resolve('sucess');
     });
   });
-}
+};
