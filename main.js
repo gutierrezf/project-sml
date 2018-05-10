@@ -39,7 +39,7 @@ mailer.send = function (to, subject, body) {
   return new Promise((resolve, reject) => {
     SendGrid.API(mailRequest, (error, response) => {
       if (error) {
-        console.log(error.response.body.errors);
+        console.error('error', error.response.body.errors);
         reject(error);
       } else {
         console.log(response.statusCode, 'mail send');
