@@ -20,7 +20,14 @@ router.post('/price-submit', co(function * (req, res, next) {
     body: html
   };
 
-  provider.mailer.send(emailObj.to, emailObj.subject, emailObj.body);
+  provider.mailer.send(emailObj.to, emailObj.subject, emailObj.body)
+    .then(() => {
+      provider.mailer.send({
+        to: [formData.email],
+        subject: 'Price Request Submited',
+        body: '<p>Thank you for your request, one of our sales representatives will be in touch as soon as possible.</p>'
+      });
+    });
   res.send('ok');
 }));
 
