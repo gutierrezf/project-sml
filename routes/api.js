@@ -31,6 +31,30 @@ router.post('/price-submit', co(function * (req, res, next) {
   res.send('ok');
 }));
 
+router.post('/add-contractors', (req, res, next) => {
+  const data = JSON.parse(req.body.json);
+  data.map(clientData => provider.db.contractor.findOrCreate(clientData));
+
+  res.send('ok');
+});
+
+router.get('/contractors', co(function * (req, res, next) {
+  const { query } = req;
+  console.log(query);
+  let data = yield provider.db.contractor.find(query);
+  data = data.map((item, index) => ({
+    index,
+    name: item.name,
+    email: item.email,
+    phone: item.phone,
+    address: item.address,
+    website: item.website,
+    source: item.source
+  }));
+
+  res.send(JSON.stringify(data));
+}));
+
 router.get('/email-view-test', (req, res, next) => {
   const formData = {
     'product-id': '766583472224',
